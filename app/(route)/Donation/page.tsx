@@ -14,7 +14,7 @@ const page = () => {
           <Image
             width={1000}
             height={800}
-            className="h-[80vh] w-full object-cover "
+            className="h-[80vh] w-full object-cover max-md:h-[50vh]"
             src="/donation-baccha.jpg"
             alt="VHL GROUP"
           />
