@@ -7,7 +7,7 @@ const EventCard = () => {
       <div className="border max-sm:ml-4 max-sm:w-[110vw] flex w-[450px] h-fit flex-col gap-2 justify-center ">
         {/* Images */}
         <img
-          className="object-cover w-[450px] max-sm:w-[110vw] h-[270px] rounded-md"
+          className="object-cover mt-20 w-[450px] max-sm:w-[110vw] h-[270px] rounded-md"
           src={"./EventCardTest.avif"}
           alt="EventCardImageTest"
         />
