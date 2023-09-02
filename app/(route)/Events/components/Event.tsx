@@ -15,9 +15,9 @@ export const Event = () => {
   const [isLoading, setIsLoading] = useState(true);
   return (
     <>
-      <div className="flex redborder max-sm:w-fit max-sm:flex-col">
-        <div className="p-[20vh] w-2/3 max-sm:w-[120vw] max-sm:h-[200vw]">
-          <div className="max-sm:w-[120vw] max-sm:-ml-40">
+      <div className="flex redborder max-sm:w-[120vw] max-sm:flex-col">
+        <div className="p-[20vh] w-2/3 max-sm:w-[120vw]">
+          <div className="max-sm:w-[120vw] max-sm:-ml-44">
             <div className="flex w-full item-center justify-center pb-10">
               <span className="font-bold text-xl">List of all our Events</span>
             </div>
