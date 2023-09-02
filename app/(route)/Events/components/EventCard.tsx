@@ -4,7 +4,7 @@ const EventCard = () => {
   return (
     <>
       {/* Card Main border */}
-      <div className="border max-sm:ml-4 max-sm:w-[110vw] flex w-[450px] h-fit flex-col gap-2 justify-center ">
+      <div className="max-sm:ml-4 max-sm:w-[110vw] flex w-[450px] max-sm:-mt-48 flex-col gap-2 justify-center ">
         {/* Images */}
         <img
           className="object-cover mt-20 w-[450px] max-sm:w-[110vw] h-[270px] rounded-md"

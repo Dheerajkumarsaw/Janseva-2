@@ -51,30 +51,35 @@ const UserMenu = () => {
                 label="Donate"
                 onClick={() => {
                   router.push("/Donation");
+                  setIsOpen(false);
                 }}
               />
               <MenuItem
                 label="Our Members"
                 onClick={() => {
                   router.push("/members");
+                  setIsOpen(false);
                 }}
               />
               <MenuItem
                 label="Registration"
                 onClick={() => {
                   router.push("/registration");
+                  setIsOpen(false);
                 }}
               />
               <MenuItem
                 label="Events"
                 onClick={() => {
                   router.push("/Events");
+                  setIsOpen(false);
                 }}
               />
               <MenuItem
                 label="About us"
                 onClick={() => {
                   router.push("/Aboutus");
+                  setIsOpen(false);
                 }}
               />
             </>
