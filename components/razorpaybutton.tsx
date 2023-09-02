@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 
 interface RazorpayButtonProps {
   amount: number;
+  temp: boolean;
 }
 
 const loadScript = (src: string, callback: () => void) => {
@@ -13,8 +14,10 @@ const loadScript = (src: string, callback: () => void) => {
   document.head.appendChild(script);
 };
 
-const RazorpayButton: React.FC<RazorpayButtonProps> = ({ amount }) => {
+const RazorpayButton: React.FC<RazorpayButtonProps> = ({ amount, temp }) => {
   const [payment, setPayment] = useState<any>(null); // Use any for now
+
+  console.log(temp);
 
   useEffect(() => {
     loadScript("https://checkout.razorpay.com/v1/checkout.js", () => {
@@ -46,6 +49,7 @@ const RazorpayButton: React.FC<RazorpayButtonProps> = ({ amount }) => {
     <Button
       className="bg-blue-500 hover:bg-blue-400 text-lg items-center border rounded-xl"
       onClick={handleClick}
+      disabled={temp}
     >
       Donate Now
     </Button>

@@ -58,7 +58,7 @@ const Dropdown = ({ selectedBranchId, setSelectedBranchId }: DropdownProps) => {
     if (selectedDistrict && selectedState) {
       axios
         .get(
-          `${process.env.API_REQUEST_URL}/api/branch/${selectedState}/${selectedDistrict}`
+          `http://localhost:5000/branch?state=${selectedState}&dist=${selectedDistrict}`
         )
         .then((res) => {
           console.log(res.data);

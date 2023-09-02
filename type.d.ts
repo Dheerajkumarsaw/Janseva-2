@@ -51,7 +51,7 @@ type FormStateType = {
   // Pincode: string;
 
   // Payment Details
-  // PaymentAmount: string;     
+  // PaymentAmount: string;
   // PaymentStatus: string;
 
   // Teacher Details
@@ -74,21 +74,41 @@ type FormStateType = {
   TeacherPassportCardFront?: File | null;
   TeacherDrivingCardFront?: File | null;
   TeacherDrivingCardBack?: File | null;
-  TeacherAddress: AddressType;
+  TeacherAddressStreet: string;
+  TeacherAddressArea: string;
+  TeacherAddressState: string;
+  TeacherAddressDistrict: string;
+  TeacherAddressCity: string;
+  TeacherAddressPincode: number;
+  TeacherAddressCountry: string;
 
   // Volunteer Details
-  // VolunteerFirstName: string;
-  // VolunteerMiddleName: string;
-  // VolunteerLastName: string;
-  // VolunteerPhoneNo: string;
-  // VolunteerEmail: string;
-  // VolunteerBloodGroup: string;
-  // VolunteerAdharCardFront: File | null;
-  // VolunteerAdharCardBack: File | null;
-  // VolunteerVoterCardFront: File | null;
-  // VolunteerVoterCardBack: File | null;
-  // VolunteerOptionalCardFront?: File | null;
-  // VolunteerOptionalCardBack?: File | null;
+  VolunteerFirstName: string;
+  VolunteerMiddleName: string;
+  VolunteerLastName: string;
+  VolunteerPhoneNo: string;
+  VolunteerEmail: string;
+  VolunteerPassword: string;
+  VolunteerBranchId: string;
+  VolunteerDOB: string;
+  VolunteerBloodGroup: string;
+  VolunteerSex: string;
+  VolunteerProfileCardFront: File | null;
+  VolunteerAadharCardFront: File | null;
+  VolunteerAadharCardBack: File | null;
+  VolunteerVoterCardFront: File | null;
+  VolunteerVoterCardBack: File | null;
+  VolunteerPanCardFront: File | null;
+  VolunteerPassportCardFront?: File | null;
+  VolunteerDrivingCardFront?: File | null;
+  VolunteerDrivingCardBack?: File | null;
+  VolunteerAddressStreet: string;
+  VolunteerAddressArea: string;
+  VolunteerAddressState: string;
+  VolunteerAddressDistrict: string;
+  VolunteerAddressCity: string;
+  VolunteerAddressPincode: number;
+  VolunteerAddressCountry: string;
 };
 
 type FormAction = {
@@ -106,3 +126,34 @@ type AddressType = {
   Pincode: number;
   Country: string;
 };
+
+// ------------------------------
+
+interface RequestBody {
+  first_name: string;
+  middle_name: string;
+  last_name: string;
+  phone_no: string;
+  blood_group: string;
+  DOB: string;
+  sex: string;
+  email: string;
+  password: string;
+  branch_id: number | null;
+  profile_image: File;
+  aadhar_front: File;
+  aadhar_back: File;
+  voter_front: File;
+  voter_back: File;
+  pan_card: File;
+  optional_front?: File | null;
+  optional_back?: File | null;
+
+  street: string;
+  city: string;
+  state: string;
+  district: string;
+  area: string;
+  pincode: number;
+  country: string;
+}

@@ -15,6 +15,10 @@ const page = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!fullName || !phone_no || !userEmail || !textArea) {
+      console.log("All fields are required");
+      return;
+    }
     const response = await axios.post(
       "http://localhost:5000/reporters",
       {
@@ -75,6 +79,7 @@ const page = () => {
               className="border rounded p-2 w-full"
               placeholder="Mukesh"
               value={fullName}
+              required
               onChange={(e) => setFullName(e.target.value)}
             />
           </div>
@@ -90,6 +95,7 @@ const page = () => {
               name="phone_no"
               className="border rounded p-2 w-full"
               placeholder="000-000-0000"
+              required
               value={phone_no}
               onChange={(e) => setNumber(e.target.valueAsNumber)}
             />
@@ -107,6 +113,7 @@ const page = () => {
               className="border rounded p-2 w-full"
               placeholder="JohnDoe@gmail.com"
               value={userEmail}
+              required
               onChange={(e) => setUserEmail(e.target.value)}
             />
           </div>
@@ -125,6 +132,7 @@ const page = () => {
               className="block p-2 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Describe your complaint within 250 words"
               value={textArea}
+              required
               onChange={(e) => setTextArea(e.target.value)}
             />
           </div>

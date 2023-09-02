@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Popover,
   PopoverContent,
@@ -9,8 +9,8 @@ import RazorpayButton from "@/components/razorpaybutton";
 import axios from "axios";
 const Form = () => {
   const [fullName, setFullName] = useState<string>("");
-  const [number, setNumber] = useState<number>();
-  const [donationAmt, setDonationAmt] = useState<number>(0);
+  const [phone_no, setNumber] = useState<number>();
+  const [donationAmt, setDonationAmt] = useState<number>();
   const [userEmail, setUserEmail] = useState<string>("");
   const [DOB, setDOB] = useState<string>("");
   console.log(DOB);
@@ -21,34 +21,40 @@ const Form = () => {
   const [state, setState] = useState<string>("");
   const [country, setCountry] = useState<string>("");
   const [pincode, setPincode] = useState<string>("");
+
+  const isDisabled = fullName && phone_no && userEmail ? false : true;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const response = await axios.post(
-      "http://localhost:5000/doners",
-      {
-        //backend     frontend
-        full_name: fullName,
-        phone_number: String(number),
-        amount: String(donationAmt),
-        email: userEmail,
-        DOB: String(DOB),
-        sex: sex,
-        pan_card: panCard,
-        street: street,
-        city: city,
-        state: state,
-        country: country,
-        pincode: pincode,
-      },
-      {
-        headers: {
-          "Access-Control-Allow-Origin": "*", // Replace with your allowed origin(s)
-          "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-          "Access-Control-Allow-Headers": "Content-Type",
-          "Content-Type": "application/json",
-        },
+    const temp = {
+      full_name: fullName,
+      phone_no: String(phone_no),
+      amount: String(donationAmt),
+      email: userEmail,
+      DOB: String(DOB),
+      sex: sex,
+      pan_card: panCard,
+      street: street,
+      city: city,
+      state: state,
+      country: country,
+      pincode: pincode,
+    };
+    const body = {};
+    for (const key in temp) {
+      if (temp[key] !== "") {
+        body[key] = temp[key];
       }
-    );
+    }
+    console.log(body);
+    const response = await axios.post("http://localhost:5000/donor", body, {
+      headers: {
+        "Access-Control-Allow-Origin": "*", // Replace with your allowed origin(s)
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Content-Type": "application/json",
+      },
+    });
     console.log(response.data.message);
     console.log(response.data);
   };
@@ -58,7 +64,7 @@ const Form = () => {
         {" "}
         {/* add onsubmit using props */}
         <h2 className="text-4xl font-semibold mb-4">Make a Donation</h2>
-        <div className="bg-white rounded shadow-md p-6 grid grid-cols-3 gap-5 w-full max-sm:flex max-sm:flex-col">
+        <div className="bg-white rounded shadow-md p-6 grid grid-cols-3 gap-5 w-full">
           {/* Full Name Field */}
           <div className="mb-4">
             <label htmlFor="full_name" className="block font-medium">
@@ -71,6 +77,7 @@ const Form = () => {
               className="border rounded p-2 w-full"
               placeholder="Amit Grewal"
               required
+              maxLength={10}
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
             />
@@ -87,7 +94,7 @@ const Form = () => {
               className="border rounded p-2 w-full"
               placeholder="000-000-0000"
               required
-              value={number}
+              value={phone_no}
               pattern="[6-9]{1}[0-9]{9}"
               onChange={(e) => setNumber(e.target.valueAsNumber)}
             />
@@ -150,9 +157,9 @@ const Form = () => {
               onChange={(e) => setSex(e.target.value)}
             >
               <option value="">----Select----</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
             </select>
           </div>
           {/* PAN Card Field */}
@@ -247,8 +254,12 @@ const Form = () => {
               onChange={(e) => setPincode(e.target.value)}
             />
           </div>
+
           {/* Submit Button */}
-          <RazorpayButton amount={donationAmt} />
+          <RazorpayButton
+            amount={donationAmt ? donationAmt : 0}
+            temp={isDisabled}
+          />
         </div>
       </form>
     </div>

@@ -5,7 +5,7 @@ type formType =
   // "Father" |
   // "Mother" |
   // "Student" |
-  // "Volunteer"|
+  "Volunteer"|
   "Teacher";
 type CardType =
   | "Aadhar"

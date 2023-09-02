@@ -4,7 +4,7 @@ type formType =
   // "Father" |
   // "Mother" |
   // "Student" |
-  // "Volunteer"|
+  "Volunteer"|
   "Teacher";
 
 type AddressFormDetailsProps = {
@@ -17,15 +17,10 @@ export const AddressFormDetails = ({
   state,
   dispatch,
 }: AddressFormDetailsProps) => {
-  useEffect(() => {
-    console.log(formType);
-    console.log(state[`${formType}Address`].Street)
-  }, []);
-
   return (
     <>
-      <div className="flex flex-col gap-5 p-10">
-        <div className="flex flex-col  gap-5">
+      <div className="flex flex-col gap-5 pb-10">
+        <div className="flex flex-col gap-5">
           {/* Add */}
           <div className="flex gap-14 ">
             <span className="text-lg font-semibold">{`Add:`}</span>
@@ -35,11 +30,11 @@ export const AddressFormDetails = ({
               name="Add"
               placeholder="House No, Street Name/No, Landmark, etc."
               required
-              value={state[`${formType}Address`].Street}
+              value={state[`${formType}AddressStreet`]}
               onChange={(e) =>
                 dispatch({
                   type: "UPDATE_FIELD",
-                  field: `${formType}Address.Street`,
+                  field: `${formType}AddressStreet`,
                   payload: e.target.value,
                 })
               }
@@ -47,7 +42,7 @@ export const AddressFormDetails = ({
           </div>
 
           {/* State */}
-          {/* <div className="flex gap-12">
+          <div className="flex gap-12">
             <span className="text-lg font-semibold">{`State:`}</span>
             <input
               className="outline-none border-b-2 border-slate-200"
@@ -55,19 +50,19 @@ export const AddressFormDetails = ({
               name="State"
               placeholder="State"
               required
-              value={state[`${formType}Address`].State}
+              value={state[`${formType}AddressState`]}
               onChange={(e) =>
                 dispatch({
                   type: "UPDATE_FIELD",
-                  field: `${formType}Address.State`,
+                  field: `${formType}AddressState`,
                   payload: e.target.value,
                 })
               }
             />
-          </div> */}
+          </div>
 
           {/* District */}
-          {/* <div className="flex gap-10">
+          <div className="flex gap-10">
             <span className="text-lg font-semibold">{`District`}</span>
             <input
               className="outline-none border-b-2 border-slate-200"
@@ -75,19 +70,19 @@ export const AddressFormDetails = ({
               name="district"
               placeholder="District"
               required
-              value={state[`${formType}Address`].District}
+              value={state[`${formType}AddressDistrict`]}
               onChange={(e) =>
                 dispatch({
                   type: "UPDATE_FIELD",
-                  field: `${formType}Address.District`,
+                  field: `${formType}AddressDistrict`,
                   payload: e.target.value,
                 })
               }
             />
-          </div> */}
+          </div>
 
           {/* City */}
-          {/* <div className="flex gap-16">
+          <div className="flex gap-16">
             <span className="text-lg font-semibold">{`City`}</span>
             <input
               className="outline-none border-b-2 border-slate-200"
@@ -95,19 +90,19 @@ export const AddressFormDetails = ({
               name="City"
               placeholder="City"
               required
-              value={state[`${formType}Address`].City}
+              value={state[`${formType}AddressCity`]}
               onChange={(e) =>
                 dispatch({
                   type: "UPDATE_FIELD",
-                  field: `${formType}Address.City`,
+                  field: `${formType}AddressCity`,
                   payload: e.target.value,
                 })
               }
             />
-          </div> */}
+          </div>
 
           {/* Area */}
-          {/* <div className="flex gap-16">
+          <div className="flex gap-16">
             <span className="text-lg font-semibold">{`Area`}</span>
             <input
               className="outline-none border-b-2 border-slate-200"
@@ -115,46 +110,37 @@ export const AddressFormDetails = ({
               name="Area"
               placeholder="Area"
               required
-              value={state[`${formType}Address`].Area}
+              value={state[`${formType}AddressArea`]}
               onChange={(e) =>
                 dispatch({
                   type: "UPDATE_FIELD",
-                  field: `${formType}Address.Area`,
+                  field: `${formType}AddressArea`,
                   payload: e.target.value,
                 })
               }
             />
-          </div> */}
+          </div>
 
           {/* Pincode */}
-          {/* <div className="flex gap-9">
+          <div className="flex gap-10">
             <span className="text-lg font-semibold">{`Pincode`}</span>
             <input
               className="outline-none border-b-2 border-slate-200"
               type="number"
-              name={`${formType}Pincode`}
+              name={`${formType}AddressPincode`}
               placeholder="Pincode"
               required
-              value={state[`${formType}Address`].Pincode}
+              value={state[`${formType}AddressPincode`]}
               onChange={(e) =>
                 dispatch({
-                  type: "UPDATED_FIELD",
-                  field: `${formType}Address.Pincode`,
+                  type: "UPDATE_FIELD",
+                  field: `${formType}AddressPincode`,
                   payload: e.target.value,
                 })
               }
             />
-          </div> */}
+          </div>
         </div>
-
-        {/* <div className="flex justify-center">
-          <button
-            type="submit"
-            className="bg-blue-600 text-white rounded-full px-10 py-2"
-          >
-            Submit
-          </button>
-        </div> */}
       </div>
     </>
   );
