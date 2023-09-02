@@ -44,7 +44,7 @@ const RazorpayButton: React.FC<RazorpayButtonProps> = ({ amount }) => {
 
   return (
     <Button
-      className="bg-blue-500 hover:bg-blue-400 text-lg items-center"
+      className="bg-blue-500 hover:bg-blue-400 text-lg items-center border rounded-xl"
       onClick={handleClick}
     >
       Donate Now

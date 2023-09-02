@@ -56,13 +56,15 @@ const page = () => {
   };
 
   return (
-    <div className="container mx-auto py-[30vh]  p-8">
-      <form onSubmit={handleSubmit} className=" flex justify-center">
-        <div className="bg-white rounded shadow-md p-6 grid grid-cols-1 gap-5 w-2/3">
-          <h2 className="text-4xl font-semibold mb-4">Raise an Issue</h2>
+    <div className="container mx-auto p-4 sm:p-8">
+      <form onSubmit={handleSubmit} className="flex justify-center mt-[8vh]">
+        <div className="bg-white max-md:w-96 rounded shadow-md p-4 sm:p-6 grid grid-cols-1 gap-4 sm:gap-6 sm:w-2/3">
+          <h2 className="text-2xl sm:text-4xl font-semibold mb-4">
+            Raise an Issue
+          </h2>
 
           {/* Full Name Field */}
-          <div className="mb-4">
+          <div className="mb-2 sm:mb-4">
             <label htmlFor="full_name" className="block font-medium">
               Full Name <span className="font-bold text-red-400">*</span>
             </label>
@@ -78,24 +80,23 @@ const page = () => {
           </div>
 
           {/* Phone Number Field */}
-          <div className="mb-4">
+          <div className="mb-2 sm:mb-4">
             <label htmlFor="phone_no" className="block font-medium">
               Phone Number <span className="font-bold text-red-400">*</span>
             </label>
             <input
-              type="number"
+              type="tel"
               id="phone_no"
               name="phone_no"
               className="border rounded p-2 w-full"
               placeholder="000-000-0000"
               value={phone_no}
-              // pattern=/[6-9]{1}[0-9]{9}
               onChange={(e) => setNumber(e.target.valueAsNumber)}
             />
           </div>
 
           {/* Email Field */}
-          <div className="mb-4">
+          <div className="mb-2 sm:mb-4">
             <label htmlFor="email" className="block font-medium">
               Email <span className="font-bold text-red-400">*</span>
             </label>
@@ -111,29 +112,29 @@ const page = () => {
           </div>
 
           {/* TextArea */}
-          <div className="mb-2">
+          <div className="mb-2 sm:mb-4">
             <label
               htmlFor="message"
               className="block mb-2 text-md font-medium text-gray-900 dark:text-white"
             >
-              Leave a Message
+              Write Your Complaint
             </label>
             <textarea
               id="message"
-              rows={9}
-              className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Leave a comment..."
+              rows={5}
+              className="block p-2 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Describe your complaint within 250 words"
               value={textArea}
               onChange={(e) => setTextArea(e.target.value)}
             />
-            <div>
-              <button
-                type="submit"
-                className="text-white mt-3 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              >
-                Submit
-              </button>
-            </div>
+          </div>
+          <div>
+            <button
+              type="submit"
+              className="text-white mt-3 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            >
+              Submit
+            </button>
           </div>
         </div>
       </form>

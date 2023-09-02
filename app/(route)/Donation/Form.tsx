@@ -1,69 +1,64 @@
+import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import RazorpayButton from "@/components/razorpaybutton";
 import axios from "axios";
-
-const Form = async () => {
+const Form = () => {
   const [fullName, setFullName] = useState<string>("");
-
   const [number, setNumber] = useState<number>();
-
   const [donationAmt, setDonationAmt] = useState<number>(0);
-
   const [userEmail, setUserEmail] = useState<string>("");
-
   const [DOB, setDOB] = useState<string>("");
-
+  console.log(DOB);
   const [sex, setSex] = useState<string>("");
-
   const [panCard, setPanCard] = useState<string>("");
-
   const [street, setStreet] = useState<string>("");
-
   const [city, setCity] = useState<string>("");
-
   const [state, setState] = useState<string>("");
-
   const [country, setCountry] = useState<string>("");
-
   const [pincode, setPincode] = useState<string>("");
-
-  const response = await axios.post(
-    "http://localhost:5000/doners",
-    {
-      //backend     frontend
-      full_name: fullName,
-      phone_number: String(number),
-      amount: String(donationAmt),
-      email: userEmail,
-      DOB: String(DOB),
-      sex: sex,
-      pan_card: panCard,
-      street: street,
-      city: city,
-      state: state,
-      country: country,
-      pincode: pincode,
-    },
-    {
-      headers: {
-        "Access-Control-Allow-Origin": "*", // Replace with your allowed origin(s)
-        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type",
-        "Content-Type": "application/json",
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const response = await axios.post(
+      "http://localhost:5000/doners",
+      {
+        //backend     frontend
+        full_name: fullName,
+        phone_number: String(number),
+        amount: String(donationAmt),
+        email: userEmail,
+        DOB: String(DOB),
+        sex: sex,
+        pan_card: panCard,
+        street: street,
+        city: city,
+        state: state,
+        country: country,
+        pincode: pincode,
       },
-    }
-  );
-
-  console.log(response.data.message);
-  console.log(response.data);
-
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*", // Replace with your allowed origin(s)
+          "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log(response.data.message);
+    console.log(response.data);
+  };
   return (
     <div className="container mx-auto p-8">
-      <form /* onSubmit={onSubmit} */ className="">
+      <form onSubmit={handleSubmit} className="">
         {" "}
         {/* add onsubmit using props */}
         <h2 className="text-4xl font-semibold mb-4">Make a Donation</h2>
-        <div className="bg-white rounded shadow-md p-6 grid grid-cols-3 gap-5 w-full">
+        <div className="bg-white rounded shadow-md p-6 grid grid-cols-3 gap-5 w-full max-sm:flex max-sm:flex-col">
           {/* Full Name Field */}
           <div className="mb-4">
             <label htmlFor="full_name" className="block font-medium">
@@ -80,7 +75,6 @@ const Form = async () => {
               onChange={(e) => setFullName(e.target.value)}
             />
           </div>
-
           {/* Phone Number Field */}
           <div className="mb-4">
             <label htmlFor="phone_no" className="block font-medium">
@@ -98,7 +92,6 @@ const Form = async () => {
               onChange={(e) => setNumber(e.target.valueAsNumber)}
             />
           </div>
-
           {/* Amount Field */}
           <div className="mb-4">
             <label htmlFor="amount" className="block font-medium">
@@ -114,7 +107,6 @@ const Form = async () => {
               onChange={(e) => setDonationAmt(e.target.valueAsNumber)}
             />
           </div>
-
           {/* Email Field */}
           <div className="mb-4">
             <label htmlFor="email" className="block font-medium">
@@ -131,7 +123,6 @@ const Form = async () => {
               onChange={(e) => setUserEmail(e.target.value)}
             />
           </div>
-
           {/* DOB Field */}
           <div className="mb-4">
             <label htmlFor="DOB" className="block font-medium">
@@ -146,7 +137,6 @@ const Form = async () => {
               onChange={(e) => setDOB(e.target.value)}
             />
           </div>
-
           {/* Sex Field */}
           <div className="mb-4">
             <label htmlFor="sex" className="block font-medium">
@@ -165,7 +155,6 @@ const Form = async () => {
               <option value="other">Other</option>
             </select>
           </div>
-
           {/* PAN Card Field */}
           <div className="mb-4">
             <label htmlFor="pan_card" className="block font-medium">
@@ -182,7 +171,6 @@ const Form = async () => {
               onChange={(e) => setPanCard(e.target.value)}
             />
           </div>
-
           {/* Street Field */}
           <div className="mb-4">
             <label htmlFor="street" className="block font-medium">
@@ -214,7 +202,6 @@ const Form = async () => {
               onChange={(e) => setCity(e.target.value)}
             />
           </div>
-
           {/* State Field */}
           <div className="mb-4">
             <label htmlFor="state" className="block font-medium">
@@ -230,7 +217,6 @@ const Form = async () => {
               onChange={(e) => setState(e.target.value)}
             />
           </div>
-
           {/* Country Field */}
           <div className="mb-4">
             <label htmlFor="country" className="block font-medium">
@@ -246,7 +232,6 @@ const Form = async () => {
               onChange={(e) => setCountry(e.target.value)}
             />
           </div>
-
           {/* Pincode Field */}
           <div className="mb-4">
             <label htmlFor="pincode" className="block font-medium">
@@ -262,7 +247,6 @@ const Form = async () => {
               onChange={(e) => setPincode(e.target.value)}
             />
           </div>
-
           {/* Submit Button */}
           <RazorpayButton amount={donationAmt} />
         </div>

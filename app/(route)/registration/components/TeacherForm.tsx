@@ -112,7 +112,7 @@ const TeacherForm = () => {
             isRequired
           />
         </div>
-
+        {/* phone no. */}
         <div className="flex flex-col gap-2">
           <PhoneNo
             formType="Teacher"

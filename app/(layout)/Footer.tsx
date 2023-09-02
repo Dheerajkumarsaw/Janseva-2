@@ -23,7 +23,7 @@ const Footer = () => {
                     <img
                       src="/images/socials/twitter.svg"
                       alt="logo"
-                      className="w-[9 0%]"
+                      className="w-[90%]"
                     />
                   </button>
                 </a>
