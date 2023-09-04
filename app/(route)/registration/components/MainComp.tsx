@@ -39,10 +39,10 @@ const MainComp = () => {
           Volunteer
         </button>
       </div>
-      <div className="redborder max-md:w-[90vw] max-md:-ml-12 border mb-10 rounded-3xl mt-10 p-5">
+      <div className=" max-md:w-[90vw] max-md:-ml-12 border mb-10 rounded-3xl mt-10 p-5">
         {/* {selectFormType === "Student" && <StudentForm />} */}
         {selectFormType === "Teacher" && <TeacherForm />}
-        {selectFormType === "Volunteer" && <VolunteerForm />}
+        {/* {selectFormType === "Volunteer" && <VolunteerForm />} */}
       </div>
     </div>
   );

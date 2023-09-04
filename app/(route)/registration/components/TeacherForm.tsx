@@ -57,76 +57,66 @@ const TeacherForm = () => {
 
   // To manage branch
   const [selectedBranchId, setSelectedBranchId] = useState<number | null>(null);
+  console.log(selectedBranchId);
 
-  const sendTeacherData = () => {
+  const sendTeacherData = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
     // validate that all the fields are filled
-    if (
-      state.TeacherFirstName === "" ||
-      state.TeacherLastName === "" ||
-      state.TeacherPhoneNo === "" ||
-      state.TeacherBloodGroup === "Select One" ||
-      state.TeacherDOB === "" ||
-      state.TeacherSex === "Select One" ||
-      state.TeacherEmail === "" ||
-      state.TeacherBloodGroup === "Select One" ||
-      state.TeacherSex === "Select One" ||
-      state.TeacherProfileCardFront === null ||
-      state.TeacherAadharCardFront === null ||
-      state.TeacherAadharCardBack === null ||
-      state.TeacherVoterCardFront === null ||
-      state.TeacherVoterCardBack === null ||
-      state.TeacherPanCardFront === null ||
-      selectedBranchId === null ||
-      state.TeacherPassword === "" ||
-      state.TeacherAddressStreet === "" ||
-      state.TeacherAddressCity === "" ||
-      state.TeacherAddressState === "" ||
-      state.TeacherAddressPincode === 0 ||
-      state.TeacherAddressCountry === "India"
-    ) {
-      alert("Please fill all the fields");
-    } else {
-      const requestBody: RequestBody = {
-        first_name: state.TeacherFirstName,
-        middle_name: state.TeacherMiddleName,
-        last_name: state.TeacherLastName,
-        phone_no: state.TeacherPhoneNo,
-        blood_group: state.TeacherBloodGroup,
-        DOB: state.TeacherDOB,
-        sex: state.TeacherSex,
-        email: state.TeacherEmail,
-        password: state.TeacherPassword,
-        branch_id: selectedBranchId,
-        profile_image: state.TeacherProfileCardFront,
-        aadhar_front: state.TeacherAadharCardFront,
-        aadhar_back: state.TeacherAadharCardBack,
-        voter_front: state.TeacherVoterCardFront,
-        voter_back: state.TeacherVoterCardBack,
-        pan_card: state.TeacherPanCardFront,
-        street: state.TeacherAddressStreet,
-        city: state.TeacherAddressCity,
-        state: state.TeacherAddressState,
-        area: state.TeacherAddressArea,
-        district: state.TeacherAddressDistrict,
-        pincode: state.TeacherAddressPincode,
-        country: state.TeacherAddressCountry,
-      };
-      if (state.TeacherPassportCardFront || state.TeacherDrivingCardFront) {
-        requestBody.optional_front =
-          state.TeacherPassportCardFront || state.TeacherDrivingCardFront;
-      }
-      if (state.TeacherDrivingCardBack) {
-        requestBody.optional_back = state.TeacherDrivingCardBack;
-      }
-      axios.postForm(`http:localhost:5000/teacher`, requestBody).then((res) => {
-        console.log(res.data);
-      });
+    const requestBody: RequestBody = {
+      first_name: state.TeacherFirstName,
+      middle_name: state.TeacherMiddleName,
+      last_name: state.TeacherLastName,
+      phone_no: state.TeacherPhoneNo,
+      blood_group: state.TeacherBloodGroup,
+      DOB: state.TeacherDOB,
+      sex: state.TeacherSex,
+      email: state.TeacherEmail,
+      password: state.TeacherPassword,
+      branch_id: Number(selectedBranchId),
+      profile_image: state.TeacherProfileCardFront,
+      aadhar_front: state.TeacherAadharCardFront,
+      aadhar_back: state.TeacherAadharCardBack,
+      voter_front: state.TeacherVoterCardFront,
+      voter_back: state.TeacherVoterCardBack,
+      pan_card: state.TeacherPanCardFront,
+      street: state.TeacherAddressStreet,
+      city: state.TeacherAddressCity,
+      state: state.TeacherAddressState,
+      area: state.TeacherAddressArea,
+      district: state.TeacherAddressDistrict,
+      pincode: state.TeacherAddressPincode,
+      country: state.TeacherAddressCountry,
+    };
+    if (state.TeacherPassportCardFront || state.TeacherDrivingCardFront) {
+      requestBody.optional_front =
+        state.TeacherPassportCardFront || state.TeacherDrivingCardFront;
     }
+    if (state.TeacherDrivingCardBack) {
+      requestBody.optional_back = state.TeacherDrivingCardBack;
+    }
+    axios
+      .postForm(`http://localhost:5000/teacher`, requestBody, {
+        headers: {
+          "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Content-Type": "application/json",
+        },
+      })
+      .then(
+        (res) => console.log(res)
+        // when status is true or 201 then create a toast then redirect to home page
+      )
+      .catch(
+        (err) => console.log(err.response.data.message)
+        // when status is false or any error then crete a toast failure and say to reenter the form
+      );
   };
 
   const formType = "Teacher";
   return (
-    <form method="POST">
+    <>
       <span className="text-2xl font-bold">Teacher Form</span>
       <div className="border w-full mt-5" />
       <div className="flex flex-col gap-5 p-10">
@@ -340,13 +330,14 @@ const TeacherForm = () => {
 
       <div className="flex justify-center">
         <button
-          onClick={sendTeacherData}
+          type="submit"
+          onClick={(e) => sendTeacherData(e)}
           className="bg-blue-600 text-white rounded-full px-10 py-2"
         >
           Submit
         </button>
       </div>
-    </form>
+    </>
   );
 };
 

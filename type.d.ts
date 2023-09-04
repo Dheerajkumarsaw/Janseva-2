@@ -140,12 +140,12 @@ interface RequestBody {
   email: string;
   password: string;
   branch_id: number | null;
-  profile_image: File;
-  aadhar_front: File;
-  aadhar_back: File;
-  voter_front: File;
-  voter_back: File;
-  pan_card: File;
+  profile_image: File | null;
+  aadhar_front: File | null;
+  aadhar_back: File | null;
+  voter_front: File | null;
+  voter_back: File | null;
+  pan_card: File | null;
   optional_front?: File | null;
   optional_back?: File | null;
 
