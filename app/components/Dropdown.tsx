@@ -14,16 +14,9 @@ type DropdownProps = {
 };
 const Dropdown = ({ selectedBranchId, setSelectedBranchId }: DropdownProps) => {
   const states: State[] = State.states;
-  const branchData = [
-    { id: 1, branchName: "Bijwasan" },
-    { id: 2, branchName: "Chhawala" },
-    { id: 3, branchName: "TilakNagar" },
-    { id: 4, branchName: "Kapashera" },
-    { id: 5, branchName: "Safdarjang" },
-    { id: 6, branchName: "testing purpose" },
-    { id: 7, branchName: "Delhi" },
-    { id: 8, branchName: "Mumbai" },
-  ];
+  const [branchData, setBranchData] = useState<
+    { BranchId: number; BranchName: string }[]
+  >([]);
 
   const [selectedState, setSelectedState] = useState<string>("");
   const [selectedDistrict, setSelectedDistrict] = useState<string>("");
@@ -46,28 +39,30 @@ const Dropdown = ({ selectedBranchId, setSelectedBranchId }: DropdownProps) => {
     setSelectedBranch(event.target.value);
 
     const findBranchId = branchData.find(
-      (branch) => branch.branchName === event.target.value
+      (branch) => branch.BranchName === event.target.value
     );
     if (findBranchId) {
-      setSelectedBranchId(findBranchId.id);
+      setSelectedBranchId(findBranchId.BranchId);
     }
   };
 
   // Push the state and district to the backend and get the branch data from there
   useEffect(() => {
-    if (selectedDistrict && selectedState) {
+    setBranchData([]);
+    if (selectedDistrict) {
       axios
         .get(
           `http://localhost:5000/branch?state=${selectedState}&dist=${selectedDistrict}`
         )
         .then((res) => {
+          setBranchData((branchData) => [...branchData, ...res.data]);
           console.log(res.data);
         })
         .catch((err) => {
           console.log(err);
         });
     }
-  }, [selectedState, selectedDistrict]);
+  }, [selectedDistrict]);
 
   return (
     <div className="flex max-xl:flex-col gap-5 ml-10">
@@ -120,8 +115,8 @@ const Dropdown = ({ selectedBranchId, setSelectedBranchId }: DropdownProps) => {
           {selectedDistrict &&
             branchData &&
             branchData.map((branch) => (
-              <option key={branch.id} value={branch.branchName}>
-                {branch.branchName}
+              <option key={branch.BranchId} value={branch.BranchName}>
+                {branch.BranchName}
               </option>
             ))}
         </select>

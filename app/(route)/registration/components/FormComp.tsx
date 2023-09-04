@@ -5,8 +5,7 @@ type formType =
   // "Father" |
   // "Mother" |
   // "Student" |
-  "Volunteer"|
-  "Teacher";
+  "Volunteer" | "Teacher";
 type CardType =
   | "Aadhar"
   | "Voter"
@@ -94,7 +93,7 @@ export const PhoneNo = ({
       <div className="flex gap-3">
         <span className="text-lg font-semibold">{`Phone:`}</span>
         <input
-          className="redborder w-[30vw] border-b-2 border-slate-200"
+          className="w-[30vw] border-b-2 border-slate-200"
           type="tel"
           name="FatherPhoneNo"
           pattern="[6-9]{1}[0-9]{9}"
