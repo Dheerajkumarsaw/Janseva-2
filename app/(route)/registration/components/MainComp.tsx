@@ -9,11 +9,11 @@ const MainComp = () => {
     "Teacher" | "Student" | "Volunteer" | null
   >(null);
   return (
-    <div className="w-2/3 ">
-      <div className="border rounded-full flex  justify-around py-2">
+    <div className="w-2/3 mt-8 ">
+      <div className="flex gap-3 max- justify-around py-2">
         <button
           type="button"
-          className={`text-lg font-bold ${
+          className={`text-lg border w-[20vw] rounded-full font-bold ${
             selectFormType === "Teacher" && "text-blue-600"
           }`}
           onClick={() => setSelectFormType("Teacher")}
@@ -22,7 +22,7 @@ const MainComp = () => {
         </button>
         <button
           type="button"
-          className={`text-lg font-bold ${
+          className={`text-lg border w-[20vw] rounded-full font-bold ${
             selectFormType === "Student" && "text-blue-600"
           }`}
           onClick={() => setSelectFormType("Student")}
@@ -31,7 +31,7 @@ const MainComp = () => {
         </button>
         <button
           type="button"
-          className={`text-lg font-bold ${
+          className={`text-lg border w-[20vw] rounded-full font-bold ${
             selectFormType === "Volunteer" && "text-blue-600"
           }`}
           onClick={() => setSelectFormType("Volunteer")}
@@ -39,7 +39,7 @@ const MainComp = () => {
           Volunteer
         </button>
       </div>
-      <div className="redborder max-md:w-[90vw] max-md:-ml-12 border mb-10 rounded-3xl mt-10 p-5">
+      <div className="max-md:w-[90vw] max-md:-ml-12 border mb-10 rounded-3xl mt-10 p-5">
         {/* {selectFormType === "Student" && <StudentForm />} */}
         {selectFormType === "Teacher" && <TeacherForm />}
         {selectFormType === "Volunteer" && <VolunteerForm />}
