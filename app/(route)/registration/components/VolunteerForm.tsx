@@ -1,31 +1,38 @@
 import React, { useState } from "react";
-import {
-  BloodGroup,
-  Email,
-  FrontBackImage,
-  Name,
-  Password,
-  PhoneNo,
-} from "./FormComp";
-import { initialState } from "./InitialState";
-import ImageUploadForm from "./ImageUploadForm";
 import Dropdown from "@/app/components/Dropdown";
-import { AddressFormDetails } from "./AddressComp";
-
-const VolunteerFormReducer = (state: FormStateType, action: FormAction) => {
-  switch (action.type) {
-    case "UPDATE_FIELD":
-      return { ...state, [action.field]: action.payload };
-    default:
-      return state;
-  }
-};
+import Image from "next/image";
 
 const VolunteerForm = () => {
-  const [state, dispatch] = React.useReducer(
-    VolunteerFormReducer,
-    initialState
-  );
+  const [volunteerFormData, setVolunteerFormData] = useState({
+    type: "Volunteer",
+    first_name: "",
+    middle_name: "",
+    last_name: "",
+    phone_no: 0,
+    email: "",
+    password: "",
+    DOB: "",
+    sex: "",
+    blood_group: "",
+    profile_image: "",
+    aadhar_front: "",
+    aadhar_back: "",
+    voter_front: "",
+    voter_back: "",
+    pan_card: "",
+    optional_front: "",
+    optional_back: "",
+    fees: "",
+    subject: "",
+    branch_id: null,
+    street: "",
+    city: "",
+    state: "",
+    country: "India",
+    pincode: "",
+    area: "",
+    district: "",
+  });
   const [selectedIdProof, setSelectedIdProof] = useState("Select One");
 
   const handleIdProofChange = (event: {
@@ -34,251 +41,389 @@ const VolunteerForm = () => {
     setSelectedIdProof(event.target.value);
   };
 
-  // To manage Blood group
-  const handleBloodGroupChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch({
-      type: "UPDATE_FIELD",
-      field: `${formType}BloodGroup`,
-      payload: e.target.value,
-    });
-  };
-
-  // To manage sex
-  const [selectedSex, setSelectedSex] = useState("Select One");
-  const handleSexChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedSex(e.target.value);
-    dispatch({
-      type: "UPDATE_FIELD",
-      field: `${formType}Sex`,
-      payload: e.target.value,
-    });
-  };
-
-  // To manage branch
   const [selectedBranchId, setSelectedBranchId] = useState<number | null>(null);
 
-  const printData = () => {
-    console.log("VolunteerFirstName: ", state.VolunteerFirstName);
-    console.log("VolunteerLastName: ", state.VolunteerLastName);
-    console.log("VolunteerPhoneNo: ", state.VolunteerPhoneNo);
-    console.log("VolunteerBloodGroup: ", state.VolunteerBloodGroup);
-    console.log("VolunteerDOB: ", state.VolunteerDOB);
-    console.log("VolunteerSex: ", state.VolunteerSex);
-    console.log("VolunteerEmail: ", state.VolunteerEmail);
-    console.log("VolunteerPassword: ", state.VolunteerPassword);
-    console.log("VolunteerBranchId: ", selectedBranchId);
-    console.log("VolunteerProfileCardFront: ", state.VolunteerProfileCardFront);
-    console.log("VolunteerAdharCardFront: ", state.VolunteerAadharCardFront);
-    console.log("VolunteerAdharCardBack: ", state.VolunteerAadharCardBack);
-    console.log("VolunteerVoterCardFront: ", state.VolunteerVoterCardFront);
-    console.log("VolunteerVoterCardBack: ", state.VolunteerVoterCardBack);
-    console.log("VolunteerPanCardFront: ", state.VolunteerPanCardFront);
-    console.log(
-      "VolunteerPassportCardFront: ",
-      state.VolunteerPassportCardFront
-    );
-    console.log("VolunteerDrivingCardFront: ", state.VolunteerDrivingCardFront);
-    console.log("VolunteerDrivingCardBack: ", state.VolunteerDrivingCardBack);
-    console.log(
-      "VolunteerAddress: ",
-      state.VolunteerAddressStreet,
-      state.VolunteerAddressCity,
-      state.VolunteerAddressDistrict,
-      state.VolunteerAddressState,
-      state.VolunteerAddressPincode
-    );
-  };
+  // handleImage
+  const [selectedImage, setSelectedImage] = useState<File | undefined>(
+    undefined
+  );
+  const [previewUrl, setPreviewUrl] = useState<string | undefined>(undefined);
 
-  const sendVolunteerData = () => {
-    // validate that all the fields are filled
-    if (
-      state.VolunteerFirstName === "" ||
-      state.VolunteerLastName === "" ||
-      state.VolunteerPhoneNo === "" ||
-      state.VolunteerBloodGroup === "Select One" ||
-      state.VolunteerDOB === "" ||
-      state.VolunteerSex === "Select One" ||
-      state.VolunteerEmail === "" ||
-      state.VolunteerBloodGroup === "Select One" ||
-      state.VolunteerSex === "Select One" ||
-      state.VolunteerProfileCardFront === null ||
-      state.VolunteerAadharCardFront === null ||
-      state.VolunteerAadharCardBack === null ||
-      state.VolunteerVoterCardFront === null ||
-      state.VolunteerVoterCardBack === null ||
-      state.VolunteerPanCardFront === null
-    ) {
-      alert("Please fill all the fields");
-    } else {
-      // hit the api to the backend using axios
-      console.log("Volunteers form is done ");
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const imageFile = event.target.files?.[0];
+    if (imageFile) {
+      setPreviewUrl(URL.createObjectURL(imageFile));
     }
   };
-  const formType = "Volunteer";
+
+  // Data sending to backend
+  const sendVolunteerData = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    console.log("From Data: ", volunteerFormData);
+  };
+  // Handle change function
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setVolunteerFormData({ ...volunteerFormData, [name]: value });
+  };
+
   return (
-    <form method="POST">
-      <span className="text-2xl font-bold">Volunteer Form</span>
-      <div className="border w-full mt-5" />
-      <div className="flex flex-col gap-5 p-10">
-        {/* Name */}
-        <div className="flex gap-10">
-          <Name
-            isRequired={true}
-            formType={formType}
-            state={state}
-            dispatch={dispatch}
-          />
-        </div>
-
-        <div className="flex gap-10">
-          <PhoneNo
-            formType={formType}
-            state={state}
-            dispatch={dispatch}
-            isRequired={true}
-          />
-        </div>
-
-        {/* Email */}
-        <div className="flex gap-10">
-          <Email
-            formType={formType}
-            state={state}
-            dispatch={dispatch}
-            isRequired={true}
-          />
-        </div>
-
-        {/* Password */}
-        <div className="flex gap-10">
-          <Password
-            formType={formType}
-            state={state}
-            dispatch={dispatch}
-            isRequired={true}
-          />
-        </div>
-
-        {/* Blood Group */}
-        <div className="flex gap-9">
-          <span className="text-base font-semibold">Blood Group:</span>
-          <select
-            className="outline-none font-semibold border-b-2 border-slate-200"
-            name={`${formType}BloodGroup`}
-            id="BloodGroup"
-            required
-            value={state[`${formType}BloodGroup`]}
-            onChange={(e) => handleBloodGroupChange(e)}
-          >
-            <option value="Select One">Select One</option>
-            <option value="A+">A+</option>
-            <option value="A-">A-</option>
-            <option value="B+">B+</option>
-            <option value="B-">B-</option>
-            <option value="AB+">AB+</option>
-            <option value="AB-">AB-</option>
-            <option value="O+">O+</option>
-            <option value="O-">O-</option>
-          </select>
-        </div>
-
-        {/* DOB */}
-        <div className="flex gap-10">
-          <span className="text-base font-semibold">DOB: </span>
-          <input
-            type="date"
-            className="outline-none font-semibold border-b-2 border-slate-200"
-            name="TeacherDOB"
-            id="DOB"
-            required
-            value={state.TeacherDOB}
-            onChange={(e) =>
-              dispatch({
-                type: "UPDATE_FIELD",
-                field: `TeacherDOB`,
-                payload: e.target.value,
-              })
-            }
-          />
-        </div>
-
-        {/* Sex Group */}
-        <div className="flex gap-9">
-          <span className="text-base font-semibold">Sex: </span>
-          <select
-            className="outline-none font-semibold border-b-2 border-slate-200"
-            name="TeacherBloodGroup"
-            id="BloodGroup"
-            required
-            value={state.TeacherSex}
-            onChange={(e) => handleSexChange(e)}
-          >
-            <option value="Select One">Select One</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Others">Others</option>
-          </select>
-        </div>
-        {/* Choose Branch */}
-        <div className="flex items-center gap-5 my-5">
-          <span className="text-base font-semibold">Chose Your Branch</span>
-          <Dropdown
-            selectedBranchId={selectedBranchId}
-            setSelectedBranchId={setSelectedBranchId}
-          />
-        </div>
-
-        {/* Profile Photo */}
-        <div className="flex gap-10 items-center">
-          <span className="text-base font-semibold">Profile Photo: </span>
-          <ImageUploadForm
-            formType={"Teacher"}
-            cardType={"Profile"}
-            PositionType={"Front"}
-            state={state}
-            dispatch={dispatch}
-          />
-        </div>
-
-        {/* Id Proof */}
-        <div className="flex gap-1">
-          <span className="text-base w-32 font-semibold">{`ID Proof:`}</span>
-          <div className="flex  flex-wrap gap-6">
-            <div className="flex flex-col gap-2 border-b-2 p-2 rounded-lg">
-              <FrontBackImage
-                cardType={"Aadhar"}
-                formType={"Teacher"}
-                state={state}
-                dispatch={dispatch}
-                isRequired={true}
-              />
-            </div>
-
-            <div className="flex flex-col gap-2 border-b-2 p-2 rounded-lg">
-              <FrontBackImage
-                cardType={"Voter"}
-                formType={"Teacher"}
-                state={state}
-                dispatch={dispatch}
-                isRequired={true}
-              />
-            </div>
-            <div className="flex flex-col gap-2 border-b-2 p-2 rounded-lg">
-              <div className="flex gap-10 items-center">
-                <span className="text-base font-bold">PanCard</span>
-                <ImageUploadForm
-                  formType={"Teacher"}
-                  cardType={"Pan"}
-                  PositionType={"Front"}
-                  state={state}
-                  dispatch={dispatch}
+    <>
+      <form method="POST">
+        <div className="flex flex-col h-full w-full">
+          <span className="text-2xl text-center  w-full font-bold">
+            Volunteer Form
+          </span>
+          <div className="border w-full mt-5" />
+          <div className="flex flex-col gap-5 p-10 max-md:p-2 ">
+            {/* Name / email-pass / DOB-Blood-Sex */}
+            <div className="grid grid-cols-3 gap-5 w-full max-md:grid-cols-1 max-lg:grid-cols-2">
+              <div className="mb-4">
+                <label className="block font-medium" htmlFor="FirstName">
+                  FirstName <span className="font-bold text-red-400">*</span>
+                </label>
+                <input
+                  placeholder="First Name"
+                  className="border rounded p-2 w-full"
+                  type="text"
+                  name="first_name"
+                  id="FirstName"
+                  value={volunteerFormData.first_name}
+                  onChange={handleChange}
                 />
+              </div>
+              <div className="mb-4">
+                <label className="block font-medium" htmlFor="MiddleName">
+                  MiddleName <span className="font-bold text-red-400">*</span>
+                </label>
+                <input
+                  placeholder="Middle Name"
+                  className="border rounded p-2 w-full"
+                  type="text"
+                  name="middle_name"
+                  id="MiddleName"
+                  value={volunteerFormData.middle_name}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block font-medium" htmlFor="LastName">
+                  LastName <span className="font-bold text-red-400">*</span>
+                </label>
+                <input
+                  placeholder="Last Name"
+                  className="border rounded p-2 w-full"
+                  type="text"
+                  name="last_name"
+                  id="LastName"
+                  value={volunteerFormData.last_name}
+                  onChange={handleChange}
+                />
+              </div>
+              {/* Email */}
+              <div className="mb-4">
+                <label className="block font-medium" htmlFor="Email">
+                  Email <span className="font-bold text-red-400">*</span>
+                </label>
+                <input
+                  placeholder="Email"
+                  className="border rounded p-2 w-full"
+                  type="email"
+                  name="email"
+                  id="Email"
+                  value={volunteerFormData.email}
+                  onChange={handleChange}
+                />
+              </div>
+              {/* Password */}
+              <div className="mb-4">
+                <label className="block font-medium" htmlFor="Password">
+                  Password <span className="font-bold text-red-400">*</span>
+                </label>
+                <input
+                  placeholder="Password"
+                  className="border rounded p-2 w-full"
+                  type="password"
+                  name="password"
+                  id="Password"
+                  value={volunteerFormData.password}
+                  onChange={handleChange}
+                />
+              </div>
+
+              {/* Phone number */}
+              <div className="mb-4">
+                <label className="block font-medium" htmlFor="Phone">
+                  Phone No: <span className="font-bold text-red-400">*</span>
+                </label>
+                <input
+                  placeholder="Phone No:"
+                  className="border rounded p-2 w-full"
+                  type="text"
+                  name="phone_no"
+                  id="Phone"
+                  value={volunteerFormData.phone_no}
+                  onChange={handleChange}
+                />
+              </div>
+
+              {/* Profile Photo */}
+              <div className="mb-4">
+                <label className="block font-medium" htmlFor="Profile">
+                  Profile Photo{" "}
+                  <span className="font-bold text-red-400">*</span>
+                </label>
+                <div className="flex items-center">
+                  <input
+                    className="border rounded p-2 w-full"
+                    type="file"
+                    accept=".jpg,.jpeg"
+                    value={volunteerFormData.profile_image}
+                    onChange={handleImageChange}
+                  />
+                  {previewUrl && (
+                    <Image
+                      src={previewUrl}
+                      alt="Preview"
+                      width={1000}
+                      height={1000}
+                      className="w-12 -ml-16"
+                    />
+                  )}
+                </div>
+              </div>
+
+              <div className="w-full max-md:hidden" />
+              <div className="w-full max-lg:hidden" />
+
+              {/* DOB */}
+              <div className="mb-4">
+                <label className="block font-medium" htmlFor="DOB">
+                  Date of Birth{" "}
+                  <span className="font-bold text-red-400">*</span>
+                </label>
+                <input
+                  type="date"
+                  className="border rounded p-2 w-full"
+                  name="DOB"
+                  id="DOB"
+                  required
+                  value={volunteerFormData.DOB}
+                  onChange={handleChange}
+                />
+              </div>
+
+              {/* Blood Group */}
+              <div className="mb-4">
+                <label className="block font-medium" htmlFor="Blood">
+                  Blood Group <span className="font-bold text-red-400">*</span>
+                </label>
+                <select
+                  className="border rounded p-2 w-full"
+                  name="blood_group"
+                  id="Blood"
+                  required
+                  value={volunteerFormData.blood_group}
+                  onChange={handleChange}
+                >
+                  <option value="Select One">Select One</option>
+                  <option value="A+">A+</option>
+                  <option value="A-">A-</option>
+                  <option value="B+">B+</option>
+                  <option value="B-">B-</option>
+                  <option value="AB+">AB+</option>
+                  <option value="AB-">AB-</option>
+                  <option value="O+">O+</option>
+                  <option value="O-">O-</option>
+                </select>
+              </div>
+
+              {/* Sex Group */}
+              <div className="mb-4">
+                <label className="block font-medium" htmlFor="Sex">
+                  Sex Group <span className="font-bold text-red-400">*</span>
+                </label>
+                <select
+                  className="border rounded p-2 w-full"
+                  name="sex"
+                  id="Sex"
+                  required
+                  value={volunteerFormData.sex}
+                  onChange={handleChange}
+                >
+                  <option value="Select One">Select One</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Others">Others</option>
+                </select>
               </div>
             </div>
 
-            <div className="flex gap-6 items-center ">
+            {/* Branch */}
+            <div className="mb-4">
+              <label className="block font-medium" htmlFor="Branch">
+                Choose Branch <span className="font-bold text-red-400">*</span>
+              </label>
+              <Dropdown
+                selectedBranchId={selectedBranchId}
+                setSelectedBranchId={setSelectedBranchId}
+              />
+            </div>
+
+            <div className="border w-full mt-5" />
+
+            {/* Adhar Id Proof */}
+            <div className="flex w-full max-md:flex-col max-lg:border p-2 rounded-lg max-md:items-start items-center">
+              <span className="text-xl w-1/3 font-bold">
+                Adhar Card <span className="font-bold text-red-400">*</span>
+              </span>
+              <div className="grid grid-cols-2 max-lg:grid-cols-1 flex-1 gap-5">
+                <div className="mb-4">
+                  <label className="block font-medium" htmlFor="AadharFront">
+                    Front <span className="font-bold text-red-400">*</span>
+                  </label>
+                  <div className="flex items-center">
+                    <input
+                      className="border rounded p-2 w-full"
+                      type="file"
+                      accept=".jpg,.jpeg"
+                      value={volunteerFormData.profile_image}
+                      onChange={handleImageChange}
+                    />
+                    {previewUrl && (
+                      <Image
+                        src={previewUrl}
+                        alt="Preview"
+                        width={1000}
+                        height={1000}
+                        className="w-12 -ml-16"
+                      />
+                    )}
+                  </div>
+                </div>
+                <div className="mb-4">
+                  <label className="block font-medium" htmlFor="AadharBack">
+                    Back <span className="font-bold text-red-400">*</span>
+                  </label>
+                  <div className="flex items-center">
+                    <input
+                      className="border rounded p-2 w-full"
+                      type="file"
+                      accept=".jpg,.jpeg"
+                      value={volunteerFormData.profile_image}
+                      onChange={handleImageChange}
+                    />
+                    {previewUrl && (
+                      <Image
+                        src={previewUrl}
+                        alt="Preview"
+                        width={1000}
+                        height={1000}
+                        className="w-12 -ml-16"
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Voter Id Proof */}
+            <div className="flex w-full max-lg:border p-2 rounded-lg max-md:flex-col max-md:items-start items-center">
+              <span className="text-xl w-1/3 font-bold">
+                Voter Card <span className="font-bold text-red-400">*</span>
+              </span>
+              <div className="grid grid-cols-2 max-lg:grid-cols-1 flex-1 gap-5">
+                <div className="mb-4">
+                  <label className="block font-medium" htmlFor="VoterFront">
+                    Front <span className="font-bold text-red-400">*</span>
+                  </label>
+                  <div className="flex items-center">
+                    <input
+                      className="border rounded p-2 w-full"
+                      type="file"
+                      accept=".jpg,.jpeg"
+                      value={volunteerFormData.profile_image}
+                      onChange={handleImageChange}
+                    />
+                    {previewUrl && (
+                      <Image
+                        src={previewUrl}
+                        alt="Preview"
+                        width={1000}
+                        height={1000}
+                        className="w-12 -ml-16"
+                      />
+                    )}
+                  </div>
+                </div>
+                <div className="mb-4">
+                  <label className="block font-medium" htmlFor="VoterBack">
+                    Back <span className="font-bold text-red-400">*</span>
+                  </label>
+                  <div className="flex items-center">
+                    <input
+                      className="border rounded p-2 w-full"
+                      type="file"
+                      accept=".jpg,.jpeg"
+                      value={volunteerFormData.profile_image}
+                      onChange={handleImageChange}
+                    />
+                    {previewUrl && (
+                      <Image
+                        src={previewUrl}
+                        alt="Preview"
+                        width={1000}
+                        height={1000}
+                        className="w-12 -ml-16"
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Pan Id Proof */}
+            <div className="flex w-full max-md:flex-col max-lg:border p-2 rounded-lg max-md:items-start items-center">
+              <span className="text-xl w-1/3 font-bold">
+                Pan Card <span className="font-bold text-red-400">*</span>
+              </span>
+              <div className="grid grid-cols-2 max-lg:grid-cols-1 flex-1 gap-5">
+                <div className="mb-4">
+                  <label className="block font-medium" htmlFor="PanFront">
+                    Front <span className="font-bold text-red-400">*</span>
+                  </label>
+                  <div className="flex items-center">
+                    <input
+                      className="border rounded p-2 w-full"
+                      type="file"
+                      accept=".jpg,.jpeg"
+                      value={volunteerFormData.profile_image}
+                      onChange={handleImageChange}
+                    />
+                    {previewUrl && (
+                      <Image
+                        src={previewUrl}
+                        alt="Preview"
+                        width={1000}
+                        height={1000}
+                        className="w-12 -ml-16"
+                      />
+                    )}
+                  </div>
+                </div>
+                {/* Empty Div */}
+                <div className="w-full mx-lg:hidden" />
+              </div>
+            </div>
+
+            {/* Optional Id Proof */}
+            <div className="flex w-full gap-5 max-md:flex-col max-lg:border p-2 rounded-lg max-md:items-start items-center">
               <select
-                className="outline-none font-semibold border-b-2 border-slate-200"
+                className="w-1/3 border max-md:w-fit text-xl font-bold rounded p-2"
                 name="IdProof"
                 id="IdProof"
                 value={selectedIdProof}
@@ -289,54 +434,204 @@ const VolunteerForm = () => {
                 <option value="Passport">Passport</option>
               </select>
               {selectedIdProof === "Driving License" ? (
-                <div className="flex flex-col gap-2 border-b-2 p-2 rounded-lg">
-                  <FrontBackImage
-                    cardType={"Driving"}
-                    formType={"Teacher"}
-                    state={state}
-                    dispatch={dispatch}
-                    isRequired={true}
-                  />
+                <div className="grid grid-cols-2 max-lg:grid-cols-1 flex-1 gap-5">
+                  <div className="mb-4">
+                    <label className="block font-medium" htmlFor="Password">
+                      Front <span className="font-bold text-red-400">*</span>
+                    </label>
+                    <div className="flex items-center">
+                      <input
+                        className="border rounded p-2 w-full"
+                        type="file"
+                        accept=".jpg,.jpeg"
+                        value={volunteerFormData.profile_image}
+                        onChange={handleImageChange}
+                      />
+                      {previewUrl && (
+                        <Image
+                          src={previewUrl}
+                          alt="Preview"
+                          width={1000}
+                          height={1000}
+                          className="w-12 -ml-16"
+                        />
+                      )}
+                    </div>
+                  </div>
+                  <div className="mb-4">
+                    <label className="block font-medium" htmlFor="Password">
+                      Back <span className="font-bold text-red-400">*</span>
+                    </label>
+                    <div className="flex items-center">
+                      <input
+                        className="border rounded p-2 w-full"
+                        type="file"
+                        accept=".jpg,.jpeg"
+                        value={volunteerFormData.profile_image}
+                        onChange={handleImageChange}
+                      />
+                      {previewUrl && (
+                        <Image
+                          src={previewUrl}
+                          alt="Preview"
+                          width={1000}
+                          height={1000}
+                          className="w-12 -ml-16"
+                        />
+                      )}
+                    </div>
+                  </div>
                 </div>
               ) : selectedIdProof === "Select One" ? (
                 "(optional)"
               ) : (
                 <>
-                  <ImageUploadForm
-                    formType={"Teacher"}
-                    cardType={"Passport"}
-                    PositionType={"Front"}
-                    state={state}
-                    dispatch={dispatch}
-                  />
+                  <div className="mb-4">
+                    <label className="block font-medium" htmlFor="Password">
+                      Front <span className="font-bold text-red-400">*</span>
+                    </label>
+                    <div className="flex items-center">
+                      <input
+                        className="border rounded p-2 w-full"
+                        type="file"
+                        accept=".jpg,.jpeg"
+                        value={volunteerFormData.profile_image}
+                        onChange={handleImageChange}
+                      />
+                      {previewUrl && (
+                        <Image
+                          src={previewUrl}
+                          alt="Preview"
+                          width={1000}
+                          height={1000}
+                          className="w-12 -ml-16"
+                        />
+                      )}
+                    </div>
+                  </div>
                 </>
               )}
             </div>
+
+            <div className="border w-full mt-5" />
+
+            {/* Address */}
+            <div className="flex flex-col mt-5 gap-5">
+              <span className="text-xl w-32 font-bold">{`Your Address:`}</span>
+              <div className="grid grid-cols-3 max-md:grid-cols-1 max-lg:grid-cols-2 gap-5 w-full">
+                {/* Street */}
+                <div className="mb-4">
+                  <label className="block font-medium" htmlFor="street">
+                    Address <span className="font-bold text-red-400">*</span>
+                  </label>
+                  <input
+                    placeholder="House no:, Block no:, Street no:, etc. "
+                    className="border rounded p-2 w-full"
+                    type="text"
+                    name="street"
+                    id="street"
+                    value={volunteerFormData.street}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                {/* State */}
+                <div className="mb-4">
+                  <label className="block font-medium" htmlFor="state">
+                    State <span className="font-bold text-red-400">*</span>
+                  </label>
+                  <input
+                    placeholder="state"
+                    className="border rounded p-2 w-full"
+                    type="text"
+                    name="state"
+                    id="state"
+                    value={volunteerFormData.state}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                {/* district */}
+                <div className="mb-4">
+                  <label className="block font-medium" htmlFor="district">
+                    District <span className="font-bold text-red-400">*</span>
+                  </label>
+                  <input
+                    placeholder="district"
+                    className="border rounded p-2 w-full"
+                    type="text"
+                    name="district"
+                    id="city"
+                    value={volunteerFormData.district}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                {/* City */}
+                <div className="mb-4">
+                  <label className="block font-medium" htmlFor="city">
+                    City <span className="font-bold text-red-400">*</span>
+                  </label>
+                  <input
+                    placeholder="city"
+                    className="border rounded p-2 w-full"
+                    type="text"
+                    name="city"
+                    id="city"
+                    value={volunteerFormData.city}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                {/* area */}
+                <div className="mb-4">
+                  <label className="block font-medium" htmlFor="area">
+                    Area <span className="font-bold text-red-400">*</span>
+                  </label>
+                  <input
+                    placeholder="area"
+                    className="border rounded p-2 w-full"
+                    type="text"
+                    name="area"
+                    id="area"
+                    value={volunteerFormData.area}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                {/* pincode */}
+                <div className="mb-4">
+                  <label className="block font-medium" htmlFor="pincode">
+                    Pincode <span className="font-bold text-red-400">*</span>
+                  </label>
+                  <input
+                    placeholder="pincode"
+                    className="border rounded p-2 w-full"
+                    type="number"
+                    name="pincode"
+                    id="city"
+                    value={volunteerFormData.pincode}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* <div className="flex gap-10"></div> */}
+
+          <div className="flex justify-center">
+            <button
+              type="submit"
+              onClick={(e) => sendVolunteerData(e)}
+              className="bg-blue-600 text-white rounded-full px-10 py-2"
+            >
+              Submit
+            </button>
           </div>
         </div>
-
-        {/* Address */}
-        <div className="flex mt-10 gap-5">
-          <span className="text-base w-32 font-semibold">{`Your Address:`}</span>
-          <AddressFormDetails
-            formType={formType}
-            state={state}
-            dispatch={dispatch}
-          />
-        </div>
-      </div>
-
-      <div className="flex gap-10"></div>
-
-      <div className="flex justify-center">
-        <button
-          onClick={printData}
-          className="bg-blue-600 text-white rounded-full px-10 py-2"
-        >
-          Submit
-        </button>
-      </div>
-    </form>
+      </form>
+    </>
   );
 };
 

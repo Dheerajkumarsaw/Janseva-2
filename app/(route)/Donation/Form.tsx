@@ -8,63 +8,44 @@ import {
 import RazorpayButton from "@/components/razorpaybutton";
 import axios from "axios";
 const Form = () => {
-  const [fullName, setFullName] = useState<string>("");
-  const [phone_no, setNumber] = useState<number>();
-  const [donationAmt, setDonationAmt] = useState<number>();
-  const [userEmail, setUserEmail] = useState<string>("");
-  const [DOB, setDOB] = useState<string>("");
-  console.log(DOB);
-  const [sex, setSex] = useState<string>("");
-  const [panCard, setPanCard] = useState<string>("");
-  const [street, setStreet] = useState<string>("");
-  const [city, setCity] = useState<string>("");
-  const [state, setState] = useState<string>("");
-  const [country, setCountry] = useState<string>("");
-  const [pincode, setPincode] = useState<string>("");
-
-  const isDisabled = fullName && phone_no && userEmail ? false : true;
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const temp = {
-      full_name: fullName,
-      phone_no: String(phone_no),
-      amount: String(donationAmt),
-      email: userEmail,
-      DOB: String(DOB),
-      sex: sex,
-      pan_card: panCard,
-      street: street,
-      city: city,
-      state: state,
-      country: country,
-      pincode: pincode,
-    };
-    const body = {};
-    for (const key in temp) {
-      if (temp[key] !== "") {
-        body[key] = temp[key];
-      }
+  const [donationAmt, setDonationAmt] = useState(0);
+  const [donationFormData, setDonationFormData] = useState({
+    fullName: "",
+    phone_no: "",
+    donationAmt: 0,
+    userEmail: "",
+    DOB: "",
+    sex: "",
+    panCard: "",
+    street: "",
+    city: "",
+    state: "",
+    country: "",
+    pincode: "",
+  });
+  const [isDisabled, setIsDisabled] = useState(true);
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    if (name === "donationAmt") {
+      setDonationAmt(parseInt(value));
+      console.log(donationAmt);
     }
-    console.log(body);
-    const response = await axios.post("http://localhost:5000/donor", body, {
-      headers: {
-        "Access-Control-Allow-Origin": "*", // Replace with your allowed origin(s)
-        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type",
-        "Content-Type": "application/json",
-      },
-    });
-    console.log(response.data.message);
-    console.log(response.data);
+    if (name === "fullName" || name === "phone_no" || name === "userEmail") {
+      setIsDisabled(false);
+    }
+    setDonationFormData({ ...donationFormData, [name]: value });
   };
   return (
     <div className="container mx-auto p-8">
-      <form onSubmit={handleSubmit} className="">
+      <form className="">
         {" "}
         {/* add onsubmit using props */}
-        <h2 className="text-4xl font-semibold mb-4">Make a Donation</h2>
-        <div className="bg-white rounded shadow-md p-6 grid grid-cols-3 gap-5 w-full">
+        <h2 className="max-md:text-center text-4xl font-semibold mb-4">
+          Make a Donation
+        </h2>
+        <div className="bg-white rounded shadow-md p-6 grid max-md:grid-cols-1 grid-cols-3 gap-5 w-full">
           {/* Full Name Field */}
           <div className="mb-4">
             <label htmlFor="full_name" className="block font-medium">
@@ -73,13 +54,13 @@ const Form = () => {
             <input
               type="text"
               id="full_name"
-              name="full_name"
+              name="fullName"
               className="border rounded p-2 w-full"
               placeholder="Amit Grewal"
               required
               maxLength={10}
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
+              value={donationFormData.fullName}
+              onChange={handleChange}
             />
           </div>
           {/* Phone Number Field */}
@@ -94,9 +75,9 @@ const Form = () => {
               className="border rounded p-2 w-full"
               placeholder="000-000-0000"
               required
-              value={phone_no}
+              value={donationFormData.phone_no}
               pattern="[6-9]{1}[0-9]{9}"
-              onChange={(e) => setNumber(e.target.valueAsNumber)}
+              onChange={handleChange}
             />
           </div>
           {/* Amount Field */}
@@ -107,11 +88,11 @@ const Form = () => {
             <input
               type="number"
               id="amount"
-              name="amount"
+              name="donationAmt"
               className="border rounded p-2 w-full"
               placeholder="Enter amount"
-              value={donationAmt}
-              onChange={(e) => setDonationAmt(e.target.valueAsNumber)}
+              value={donationFormData.donationAmt}
+              onChange={handleChange}
             />
           </div>
           {/* Email Field */}
@@ -122,12 +103,12 @@ const Form = () => {
             <input
               type="email"
               id="email"
-              name="email"
+              name="userEmail"
               className="border rounded p-2 w-full"
-              placeholder="jansevaa31@gmail.com"
+              placeholder="rsmefoundation88@gmail.com"
               required
-              value={userEmail}
-              onChange={(e) => setUserEmail(e.target.value)}
+              value={donationFormData.userEmail}
+              onChange={handleChange}
             />
           </div>
           {/* DOB Field */}
@@ -140,8 +121,8 @@ const Form = () => {
               id="DOB"
               name="DOB"
               className="border rounded p-2 w-full"
-              value={DOB}
-              onChange={(e) => setDOB(e.target.value)}
+              value={donationFormData.DOB}
+              onChange={handleChange}
             />
           </div>
           {/* Sex Field */}
@@ -153,13 +134,13 @@ const Form = () => {
               id="sex"
               name="sex"
               className="border rounded p-2 w-full"
-              /*  value={sex} */
-              onChange={(e) => setSex(e.target.value)}
+              value={donationFormData.sex}
+              onChange={handleChange}
             >
               <option value="">----Select----</option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
-              <option value="Other">Other</option>
+              <option value="Others">Others</option>
             </select>
           </div>
           {/* PAN Card Field */}
@@ -170,12 +151,12 @@ const Form = () => {
             <input
               type="string"
               id="pan_card"
-              name="pan_card"
+              name="panCard"
               className="border rounded p-2 w-full"
               placeholder="ABCDE1234F"
               // required
-              value={panCard}
-              onChange={(e) => setPanCard(e.target.value)}
+              value={donationFormData.panCard}
+              onChange={handleChange}
             />
           </div>
           {/* Street Field */}
@@ -189,8 +170,8 @@ const Form = () => {
               name="street"
               className="border rounded p-2 w-full"
               placeholder="1234 Main Street"
-              value={street}
-              onChange={(e) => setStreet(e.target.value)}
+              value={donationFormData.street}
+              onChange={handleChange}
             />
           </div>
           {/* sadasdf */}
@@ -205,8 +186,8 @@ const Form = () => {
               name="city"
               className="border rounded p-2 w-full"
               placeholder="City"
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
+              value={donationFormData.city}
+              onChange={handleChange}
             />
           </div>
           {/* State Field */}
@@ -220,8 +201,8 @@ const Form = () => {
               name="state"
               className="border rounded p-2 w-full"
               placeholder="State"
-              value={state}
-              onChange={(e) => setState(e.target.value)}
+              value={donationFormData.state}
+              onChange={handleChange}
             />
           </div>
           {/* Country Field */}
@@ -235,8 +216,8 @@ const Form = () => {
               name="country"
               className="border rounded p-2 w-full"
               placeholder="Country"
-              value={country}
-              onChange={(e) => setCountry(e.target.value)}
+              value={donationFormData.country}
+              onChange={handleChange}
             />
           </div>
           {/* Pincode Field */}
@@ -250,16 +231,12 @@ const Form = () => {
               name="pincode"
               className="border rounded p-2 w-full"
               placeholder="110061"
-              value={pincode}
-              onChange={(e) => setPincode(e.target.value)}
+              value={donationFormData.pincode}
+              onChange={handleChange}
             />
           </div>
-
           {/* Submit Button */}
-          <RazorpayButton
-            amount={donationAmt ? donationAmt : 0}
-            temp={isDisabled}
-          />
+          <RazorpayButton temp={isDisabled} amount={donationAmt} />
         </div>
       </form>
     </div>

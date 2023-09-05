@@ -62,29 +62,31 @@ const Dropdown = ({ selectedBranchId, setSelectedBranchId }: DropdownProps) => {
           console.log(err);
         });
     }
-  }, [selectedDistrict]);
+  }, [selectedDistrict, selectedState]);
 
   return (
-    <div className="flex max-xl:flex-col gap-5 ml-10">
-      <select
-        className="w-[250px] rounded-md border px-3 py-2 text-lg font-semibold"
-        name="stateDropdown"
-        id="stateDropdown"
-        value={selectedState}
-        onChange={handleStateChange}
-      >
-        <option value="">Select State</option>
-        {states.map((state) => (
-          <option key={state.state} value={state.state}>
-            {state.state}
-          </option>
-        ))}
-      </select>
+    <div className="grid grid-cols-3 gap-5 w-full max-md:grid-cols-1">
+      <div>
+        <select
+          className="border rounded p-2 w-full"
+          name="stateDropdown"
+          id="stateDropdown"
+          value={selectedState}
+          onChange={handleStateChange}
+        >
+          <option value="">Select State</option>
+          {states.map((state) => (
+            <option key={state.state} value={state.state}>
+              {state.state}
+            </option>
+          ))}
+        </select>
+      </div>
 
       {/* districts */}
       <div>
         <select
-          className="w-[250px] rounded-md border px-3 py-2 text-lg font-semibold"
+          className="border rounded p-2 w-full"
           name="districtDropdown"
           id="districtDropdown"
           value={selectedDistrict}
@@ -105,7 +107,7 @@ const Dropdown = ({ selectedBranchId, setSelectedBranchId }: DropdownProps) => {
       {/* Branch */}
       <div>
         <select
-          className="w-[250px] rounded-md border px-3 py-2 text-lg font-semibold"
+          className="border rounded p-2 w-full"
           name="districtDropdown"
           id="districtDropdown"
           value={selectedBranch}

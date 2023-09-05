@@ -13,15 +13,11 @@ type ImageUploadFormProps = {
     | "Driving"
     | "Profile";
   PositionType: "Front" | "Back";
-  state: FormStateType;
-  dispatch: React.Dispatch<FormAction>;
 };
 const ImageUploadForm = ({
   formType,
   cardType,
   PositionType,
-  state,
-  dispatch,
 }: ImageUploadFormProps) => {
   const [selectedImage, setSelectedImage] = useState<File | undefined>(
     undefined
@@ -31,21 +27,15 @@ const ImageUploadForm = ({
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const imageFile = event.target.files?.[0];
     if (imageFile) {
-      setSelectedImage(imageFile);
       setPreviewUrl(URL.createObjectURL(imageFile));
     }
-    dispatch({
-      type: "UPDATE_FIELD",
-      field: `${formType}${cardType}Card${PositionType}`,
-      payload: imageFile,
-    });
   };
 
   return (
     <>
-      <div className="-ml-6 text-sm flex items-center">
+      <div className="flex items-center">
         <input
-          className="ml-4"
+          className="border rounded p-2 w-full"
           type="file"
           accept=".jpg,.jpeg"
           onChange={handleImageChange}
@@ -56,7 +46,7 @@ const ImageUploadForm = ({
             alt="Preview"
             width={1000}
             height={1000}
-            className="w-16 -ml-16"
+            className="w-12 -ml-16"
           />
         )}
       </div>

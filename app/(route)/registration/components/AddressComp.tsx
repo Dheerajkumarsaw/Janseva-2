@@ -1,143 +1,128 @@
 "use client";
-import { Dispatch, useEffect } from "react";
-type formType =
-  // "Father" |
-  // "Mother" |
-  // "Student" |
-  "Volunteer"|
-  "Teacher";
+import Dropdown from "@/app/components/Dropdown";
+import React, { useState } from "react";
 
-type AddressFormDetailsProps = {
-  formType: formType;
-  state: FormStateType;
-  dispatch: Dispatch<FormAction>;
-};
-export const AddressFormDetails = ({
-  formType,
-  state,
-  dispatch,
-}: AddressFormDetailsProps) => {
+interface AddressCompType {
+  parentsFormData: ParentsFormDataType;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  selectedBranchId: number | null;
+  setSelectedBranchId: React.Dispatch<React.SetStateAction<number | null>>;
+}
+const AddressComp = ({
+  selectedBranchId,
+  setSelectedBranchId,
+  parentsFormData,
+  handleChange,
+}: AddressCompType) => {
   return (
     <>
-      <div className="flex flex-col gap-5 pb-10">
-        <div className="flex flex-col gap-5">
-          {/* Add */}
-          <div className="flex gap-14 ">
-            <span className="text-lg font-semibold">{`Add:`}</span>
+      {/* Address */}
+      <div className="flex flex-col py-5 pl-10 gap-5 max-md:p-2">
+        {/* Branch */}
+        <div className="mb-4">
+          <label className="block font-medium" htmlFor="Branch">
+            Choose Branch <span className="font-bold text-red-400">*</span>
+          </label>
+          <Dropdown
+            selectedBranchId={selectedBranchId}
+            setSelectedBranchId={setSelectedBranchId}
+          />
+        </div>
+        <div className="border w-full"/>
+        <div className="grid grid-cols-3 max-md:grid-cols-1 max-lg:grid-cols-2 gap-5 w-full">
+          {/* Street */}
+          <div className="mb-4">
+            <label className="block font-medium" htmlFor="street">
+              Address <span className="font-bold text-red-400">*</span>
+            </label>
             <input
-              className="outline-none border-b-2 w-[30vw] border-slate-200"
+              placeholder="House no:, Block no:, Street no:, etc. "
+              className="border rounded p-2 w-full"
               type="text"
-              name="Add"
-              placeholder="House No, Street Name/No, Landmark, etc."
-              required
-              value={state[`${formType}AddressStreet`]}
-              onChange={(e) =>
-                dispatch({
-                  type: "UPDATE_FIELD",
-                  field: `${formType}AddressStreet`,
-                  payload: e.target.value,
-                })
-              }
+              name="street"
+              id="street"
+              value={parentsFormData.street}
+              onChange={handleChange}
             />
           </div>
 
           {/* State */}
-          <div className="flex gap-12">
-            <span className="text-lg font-semibold">{`State:`}</span>
+          <div className="mb-4">
+            <label className="block font-medium" htmlFor="state">
+              State <span className="font-bold text-red-400">*</span>
+            </label>
             <input
-              className="outline-none border-b-2 border-slate-200"
+              placeholder="state"
+              className="border rounded p-2 w-full"
               type="text"
-              name="State"
-              placeholder="State"
-              required
-              value={state[`${formType}AddressState`]}
-              onChange={(e) =>
-                dispatch({
-                  type: "UPDATE_FIELD",
-                  field: `${formType}AddressState`,
-                  payload: e.target.value,
-                })
-              }
+              name="state"
+              id="state"
+              value={parentsFormData.state}
+              onChange={handleChange}
             />
           </div>
 
-          {/* District */}
-          <div className="flex gap-10">
-            <span className="text-lg font-semibold">{`District`}</span>
+          {/* district */}
+          <div className="mb-4">
+            <label className="block font-medium" htmlFor="district">
+              District <span className="font-bold text-red-400">*</span>
+            </label>
             <input
-              className="outline-none border-b-2 border-slate-200"
+              placeholder="district"
+              className="border rounded p-2 w-full"
               type="text"
               name="district"
-              placeholder="District"
-              required
-              value={state[`${formType}AddressDistrict`]}
-              onChange={(e) =>
-                dispatch({
-                  type: "UPDATE_FIELD",
-                  field: `${formType}AddressDistrict`,
-                  payload: e.target.value,
-                })
-              }
+              id="district"
+              value={parentsFormData.district}
+              onChange={handleChange}
             />
           </div>
 
           {/* City */}
-          <div className="flex gap-16">
-            <span className="text-lg font-semibold">{`City`}</span>
+          <div className="mb-4">
+            <label className="block font-medium" htmlFor="city">
+              City <span className="font-bold text-red-400">*</span>
+            </label>
             <input
-              className="outline-none border-b-2 border-slate-200"
+              placeholder="city"
+              className="border rounded p-2 w-full"
               type="text"
-              name="City"
-              placeholder="City"
-              required
-              value={state[`${formType}AddressCity`]}
-              onChange={(e) =>
-                dispatch({
-                  type: "UPDATE_FIELD",
-                  field: `${formType}AddressCity`,
-                  payload: e.target.value,
-                })
-              }
+              name="city"
+              id="city"
+              value={parentsFormData.city}
+              onChange={handleChange}
             />
           </div>
 
-          {/* Area */}
-          <div className="flex gap-16">
-            <span className="text-lg font-semibold">{`Area`}</span>
+          {/* area */}
+          <div className="mb-4">
+            <label className="block font-medium" htmlFor="area">
+              Area <span className="font-bold text-red-400">*</span>
+            </label>
             <input
-              className="outline-none border-b-2 border-slate-200"
+              placeholder="area"
+              className="border rounded p-2 w-full"
               type="text"
-              name="Area"
-              placeholder="Area"
-              required
-              value={state[`${formType}AddressArea`]}
-              onChange={(e) =>
-                dispatch({
-                  type: "UPDATE_FIELD",
-                  field: `${formType}AddressArea`,
-                  payload: e.target.value,
-                })
-              }
+              name="area"
+              id="area"
+              value={parentsFormData.area}
+              onChange={handleChange}
             />
           </div>
 
-          {/* Pincode */}
-          <div className="flex gap-10">
-            <span className="text-lg font-semibold">{`Pincode`}</span>
+          {/* pincode */}
+          <div className="mb-4">
+            <label className="block font-medium" htmlFor="pincode">
+              Pincode <span className="font-bold text-red-400">*</span>
+            </label>
             <input
-              className="outline-none border-b-2 border-slate-200"
+              placeholder="pincode"
+              className="border rounded p-2 w-full"
               type="number"
-              name={`${formType}AddressPincode`}
-              placeholder="Pincode"
-              required
-              value={state[`${formType}AddressPincode`]}
-              onChange={(e) =>
-                dispatch({
-                  type: "UPDATE_FIELD",
-                  field: `${formType}AddressPincode`,
-                  payload: e.target.value,
-                })
-              }
+              name="pincode"
+              id="city"
+              value={parentsFormData.pincode}
+              onChange={handleChange}
             />
           </div>
         </div>
@@ -145,3 +130,5 @@ export const AddressFormDetails = ({
     </>
   );
 };
+
+export default AddressComp;
