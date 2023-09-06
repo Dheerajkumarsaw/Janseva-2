@@ -12,7 +12,7 @@ const Form = () => {
   const [donationFormData, setDonationFormData] = useState({
     fullName: "",
     phone_no: "",
-    donationAmt: 0,
+    donationAmt: "",
     userEmail: "",
     DOB: "",
     sex: "",
@@ -32,7 +32,12 @@ const Form = () => {
       setDonationAmt(parseInt(value));
       console.log(donationAmt);
     }
-    if (name === "fullName" || name === "phone_no" || name === "userEmail") {
+    if (
+      donationFormData.fullName !== "" &&
+      donationFormData.phone_no !== "" &&
+      donationFormData.userEmail !== "" &&
+      donationFormData.donationAmt !== ""
+    ) {
       setIsDisabled(false);
     }
     setDonationFormData({ ...donationFormData, [name]: value });

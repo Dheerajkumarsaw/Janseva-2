@@ -2,11 +2,12 @@
 import { Button } from "@/components/ui/button";
 import { Description } from "@radix-ui/react-dialog";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 /* import React, { useState } from "react";
  */
 const Report = () => {
-  const [reportFormData, setreportFormData] = useState({
+  const [isDisabled, setIsDisabled] = useState(true);
+  const [reportFormData, setReportFormData] = useState({
     fullName: "",
     phone_no: "",
     userEmail: "",
@@ -18,8 +19,9 @@ const Report = () => {
     >
   ) => {
     const { name, value } = e.target;
-    setreportFormData({ ...reportFormData, [name]: value });
+    setReportFormData({ ...reportFormData, [name]: value });
   };
+
   // Data sending to backend
   const sendReportData = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -27,6 +29,23 @@ const Report = () => {
     e.preventDefault();
     console.log("From Data: ", reportFormData);
   };
+
+  useEffect(() => {
+    if (
+      reportFormData.fullName != "" &&
+      reportFormData.phone_no != "" &&
+      reportFormData.userEmail != "" &&
+      reportFormData.textArea != ""
+    ) {
+      setIsDisabled(false);
+    }
+  }, [
+    reportFormData.fullName,
+    reportFormData.phone_no,
+    reportFormData.userEmail,
+    reportFormData.textArea,
+  ]);
+
   return (
     <div className="container mx-auto p-4 sm:p-8">
       <form className="flex justify-center mt-[8vh]">
@@ -56,7 +75,7 @@ const Report = () => {
               Phone Number <span className="font-bold text-red-400">*</span>
             </label>
             <input
-              type="tel"
+              type="number"
               id="phone_no"
               name="phone_no"
               className="border rounded p-2 w-full"
@@ -74,7 +93,7 @@ const Report = () => {
             <input
               type="email"
               id="email"
-              name="email"
+              name="userEmail"
               className="border rounded p-2 w-full"
               placeholder="JohnDoe@gmail.com"
               value={reportFormData.userEmail}
@@ -92,6 +111,7 @@ const Report = () => {
             </label>
             <textarea
               id="message"
+              name="textArea"
               rows={5}
               className="block p-2 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Describe your complaint within 250 words"
@@ -101,13 +121,14 @@ const Report = () => {
             />
           </div>
           <div>
-            <button
+            <Button
               type="submit"
               className="text-white mt-3 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               onClick={sendReportData}
+              disabled={isDisabled}
             >
               Submit
-            </button>
+            </Button>
           </div>
         </div>
       </form>
