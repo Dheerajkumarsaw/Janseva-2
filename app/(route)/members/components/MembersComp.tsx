@@ -31,11 +31,57 @@ export const MembersComp = () => {
   const [selectMember, setSelectMember] = useState<number>(0);
 
   // Push the selected MemberId to the backend and get the member data from there
-  const MemberDummyData = [
-    { id: 1, post: "President", member: "Amit Grewal" },
-    { id: 2, post: "Chota President", member: "Sachin Yadav" },
-    { id: 3, post: "aur chota President", member: "Rituraj" },
-    { id: 4, post: "thoda aur chota Presdient", member: "Dheeraj" },
+  const NationalMemberDummyData = [
+    { id: 1, post: "President", member: "Mr. Amit Grewal" },
+    { id: 2, post: "Vice President", member: "Ms. Emily Johnson" },
+    { id: 3, post: "Secretary", member: "Mr. David Smith" },
+    { id: 4, post: "Treasurer", member: "Ms. Sarah Patel" },
+    { id: 5, post: "Board Member", member: "Mr. Carlos Rodriguez" },
+  ];
+
+  const StateMemberDummyData = [
+    { id: 1, post: "State Director", member: "Mr. Mark Williams" },
+    { id: 2, post: "State Program Manager", member: "Ms. Jessica Lee" },
+    {
+      id: 3,
+      post: "State Fundraising Coordinator",
+      member: "Mr. Robert Johnson",
+    },
+    { id: 4, post: "State Communications Officer", member: "Ms. Emily Davis" },
+    { id: 5, post: "State Volunteer Coordinator", member: "Mr. Daniel Smith" },
+  ];
+
+  const DistrictMemberDummyData = [
+    { id: 1, post: "District Director", member: "Ms. Laura Adams" },
+    { id: 2, post: "District Program Manager", member: "Mr. James Wilson" },
+    {
+      id: 3,
+      post: "District Fundraising Coordinator",
+      member: "Ms. Rachel Brown",
+    },
+    {
+      id: 4,
+      post: "District Communications Officer",
+      member: "Mr. Christopher Turner",
+    },
+    {
+      id: 5,
+      post: "District Volunteer Coordinator",
+      member: "Ms. Maria Garcia",
+    },
+  ];
+
+  const BranchMemberDummyData = [
+    { id: 1, post: "Branch Manager", member: "John Smith" },
+    { id: 2, post: "Volunteer Coordinator", member: "Emily Johnson" },
+    { id: 3, post: "Branch Manager", member: "David Jones" },
+    { id: 4, post: "Volunteer Coordinator", member: "Sarah Patel" },
+    { id: 5, post: "Branch Manager", member: "Lisa Martinez" },
+    { id: 6, post: "Volunteer Coordinator", member: "Michael Davis" },
+    { id: 7, post: "Branch Manager", member: "Laura Adams" },
+    { id: 8, post: "Volunteer Coordinator", member: "James Wilson" },
+    { id: 9, post: "Branch Manager", member: "Rachel Brown" },
+    { id: 10, post: "Volunteer Coordinator", member: "Christopher Turner" },
   ];
 
   const MemberDetailsDummyData = {
@@ -50,19 +96,38 @@ export const MembersComp = () => {
   };
 
   useEffect(() => {
-    if (selectedBranchId) {
+    if (selectMember) {
       setMemberLoading(false);
-    } else if (!selectedBranchId) {
+    } else if (!selectMember) {
       setMemberLoading(true);
     }
-  }, [selectedBranchId]);
+  }, [selectMember]);
+
+  const [getNational, setGetNational] = useState(true);
+  const [getState, setGetState] = useState(false);
+  const [getDistrict, setGetDistrict] = useState(false);
+  const [getBranch, setGetBranch] = useState(false);
 
   return (
     <>
       <div className="">
         <div className="flex items-center gap-5 justify-center mt-10">
-          <span className="text-xl font-bold">Chose Location</span>
+          <button
+            onClick={() => {
+              setGetNational(true),
+                setGetState(false),
+                setGetDistrict(false),
+                setGetBranch(false);
+            }}
+            className="text-lg border rounded-lg p-2 font-bold"
+          >
+            National Members
+          </button>
           <Dropdown
+            setGetNational={setGetNational}
+            setGetState={setGetState}
+            setGetDistrict={setGetDistrict}
+            setGetBranch={setGetBranch}
             selectedBranchId={selectedBranchId}
             setSelectedBranchId={setSelectedBranchId}
           />
@@ -70,12 +135,38 @@ export const MembersComp = () => {
         <div className="border w-full my-10" />
         <div className="flex gap-10">
           <div className="mt-10 h-fit w-1/3 border rounded-lg">
-            <MemberTable
-              isLoading={memberLoading}
-              selectMember={selectMember}
-              setSelectMember={setSelectMember}
-              memberData={MemberDummyData}
-            />
+            {getNational && (
+              <MemberTable
+                isLoading={false}
+                selectMember={selectMember}
+                setSelectMember={setSelectMember}
+                memberData={NationalMemberDummyData}
+              />
+            )}
+            {getState && (
+              <MemberTable
+                isLoading={false}
+                selectMember={selectMember}
+                setSelectMember={setSelectMember}
+                memberData={StateMemberDummyData}
+              />
+            )}
+            {getDistrict && (
+              <MemberTable
+                isLoading={false}
+                selectMember={selectMember}
+                setSelectMember={setSelectMember}
+                memberData={DistrictMemberDummyData}
+              />
+            )}
+            {getBranch && (
+              <MemberTable
+                isLoading={false}
+                selectMember={selectMember}
+                setSelectMember={setSelectMember}
+                memberData={BranchMemberDummyData}
+              />
+            )}
           </div>
           <div className="mt-10 h-fit flex justify-center w-1/3 rounded-lg">
             <MemberDetails

@@ -25,10 +25,10 @@ const Cards = ({ heading, description, images }: CardsType) => {
             {description}
           </p>
 
-          <Button className="border text-[1.1rem] font-bold border-blue-500 bg-transparent text-black hover:text-white hover:bg-blue-300">
+          {/* <Button className="border text-[1.1rem] font-bold border-blue-500 bg-transparent text-black hover:text-white hover:bg-blue-300">
             Read More &nbsp;
             <Image src="images/right-arrow.svg" alt="" width={15} height={15} />
-          </Button>
+          </Button> */}
         </div>
       </div>
     </div>

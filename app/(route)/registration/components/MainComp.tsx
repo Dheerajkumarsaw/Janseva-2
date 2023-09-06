@@ -3,10 +3,11 @@ import React, { useState } from "react";
 import { StudentForm } from "./StudentForm";
 import TeacherForm from "./TeacherForm";
 import VolunteerForm from "./VolunteerForm";
+import BeneficiaryForm from "./BeneficiaryForm";
 
 const MainComp = () => {
   const [selectFormType, setSelectFormType] = useState<
-    "Teacher" | "Student" | "Volunteer" | null
+    "Teacher" | "Student" | "Volunteer" | "Beneficiary" | null
   >(null);
   return (
     <div className="w-2/3  max-md:w-[95%]">
@@ -38,11 +39,21 @@ const MainComp = () => {
         >
           Volunteer
         </button>
+        <button
+          type="button"
+          className={`text-lg p-2 border w-fit rounded-full font-bold ${
+            selectFormType === "Beneficiary" && "text-blue-600"
+          }`}
+          onClick={() => setSelectFormType("Beneficiary")}
+        >
+          Beneficiary
+        </button>
       </div>
       <div className="border  mb-10 rounded-3xl mt-10 p-5 max-md:px-0 ">
         {selectFormType === "Student" && <StudentForm />}
         {selectFormType === "Teacher" && <TeacherForm />}
         {selectFormType === "Volunteer" && <VolunteerForm />}
+        {selectFormType === "Beneficiary" && <BeneficiaryForm />}
       </div>
     </div>
   );

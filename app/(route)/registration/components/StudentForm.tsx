@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { initialState } from "./InitialState";
 import FatherForm from "./FatherForm";
 import MotherForm from "./MotherForm";
 import AddressComp from "./AddressComp";
